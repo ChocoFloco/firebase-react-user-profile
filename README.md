@@ -3,7 +3,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Purpose
 
-react-firebase-user-profile is a sample application created to illustrate some basic concepts working with react and firebase.
+firebase-react-user-profile is a sample application created to illustrate some basic concepts working with react and firebase.
 
 App includes user registration, login, and basic user profile with editable attributes and user image.
 
