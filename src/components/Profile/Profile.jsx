@@ -87,6 +87,7 @@ export default class Profile extends Component {
                                         isLoading={isLoading} 
                                         profileData={profileData}
                                         onEditProfile={this.editProfile}
+                                        uploadPhoto={this.uploadPhoto}
                                     />
                                 </div>
                             </Transition>

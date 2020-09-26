@@ -9,7 +9,7 @@ import {
 import Moment from 'moment';
 
 
-const ProfileDetail = ({ isLoading, profileData, onEditProfile }) => {
+const ProfileDetail = ({ isLoading, profileData, onEditProfile, uploadPhoto }) => {
     return <Card color="teal">
         <Dimmer active={isLoading}>
             <Loader />
@@ -18,7 +18,7 @@ const ProfileDetail = ({ isLoading, profileData, onEditProfile }) => {
             alt="user"
             src={profileData.picUrl || require('../../images/default-user-img.jpg')}
             className='ui image'
-            onClick={this.uploadPhoto} />
+            onClick={uploadPhoto} />
         <Card.Content>
             <Card.Header>{profileData.name}</Card.Header>
             <Card.Meta>{profileData.location}</Card.Meta>

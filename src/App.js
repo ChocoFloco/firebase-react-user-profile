@@ -33,11 +33,12 @@ class App extends Component {
 
     constructor(props){
         super(props);
-        const me = this;
 
         this.state = {
             loggedInUserToken: null
         }
+
+        this.store = createReduxStore();
 
         if (firebase.apps.length === 0)
             firebase.initializeApp(DB_CONFIG);
@@ -46,27 +47,37 @@ class App extends Component {
             userProfile: 'users'
         }
         
-        this.store = createReduxStore();
         const { store } = this;
-
         this.rrfProps = {
             firebase,
             config: fb_config,
             dispatch: store.dispatch
         }
-
-        //auth status listener
-		firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                //save token for shallow calls or any auth needed outside the sdk
-                user.getIdToken().then((data) => {
-                    me.setState({ loggedInUserToken: data, uid: user.uid });
-                });                
-            } else {
-                me.setState({ loggedInUserToken: null });
-            }
-        });
     }
+
+    componentDidMount(){
+        const { authStateHasChanged } = this;
+        firebase
+            .auth()
+            .onAuthStateChanged(authStateHasChanged);
+    }
+
+    authStateHasChanged = (user) => {
+        const me = this;
+        if (!user){
+            me.setState({ 
+                loggedInUserToken: null 
+            });
+            return;
+        }
+
+        user.getIdToken().then((data) => {
+            me.setState({ 
+                loggedInUserToken: data, 
+                uid: user.uid 
+            });
+        });
+    };
 
     render() {
         //wrap the navbar in withRouter for location info in props
@@ -80,7 +91,10 @@ class App extends Component {
                     <HashRouter>
                         <div>
                             <Header />
-                            <NavbarWithLocation loggedInUserToken={this.state.loggedInUserToken} hidden={this.state.loggedInUserToken == null} />
+                            <NavbarWithLocation 
+                                loggedInUserToken={this.state.loggedInUserToken} 
+                                hidden={this.state.loggedInUserToken == null} 
+                            />
                             <PrivateRoute 
                                 authed={this.state.loggedInUserToken != null} 
                                 uid={this.state.uid}  
@@ -88,7 +102,10 @@ class App extends Component {
                                 component={Profile} 
                             />
                             <Route exact path="/signup" component={SignupWithLocation} />
-                            <Route path={'/login'} component={() => <LoginWithLocation loggedInUserToken={this.state.loggedInUserToken} />} />
+                            <Route 
+                                path={'/login'} 
+                                component={() => <LoginWithLocation loggedInUserToken={this.state.loggedInUserToken} />} 
+                            />
                         </div>
                     </HashRouter>
                 </ReactReduxFirebaseProvider>
