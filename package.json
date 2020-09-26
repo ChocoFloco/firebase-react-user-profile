@@ -1,7 +1,8 @@
 {
   "name": "firebase-react-user-profile",
   "version": "0.1.0",
-  "private": true,
+  "author": "Bryan Strader <bryan@stoic.systems>",
+  "license" : "MIT",
   "dependencies": {
     "connected-react-router": "^6.4.0",
     "firebase": "^5.11.1",
